@@ -1,9 +1,11 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import numpy as np, pandas as pd
+import pickle
 import KNearestNeighbors, MultinomialNaiveBayes, RandomForest, SupportVectorMachine, KMeans
-""""""
+import ontology_manager
+import CSP_AnalysisPrenotation
+
 
 def main():
     print("Preparazione dati...")
@@ -40,4 +42,17 @@ def main():
     #Classificazione non supervisionata
     print("ALGORITMO: K-Means")
     KMeans.KMEANS(x,y)
+    
+    #Caricamento modello addestrato
+    #filename = "knn_model.sav"
+    #loaded_model = pickle.load(open(filename, 'rb'))
+    #result = loaded_model.score(X_test, Y_test)
+    #print(result)
+    
+    #Stampa il contenuto della ontologia
+    print("\n\nONTOLOGIA DI DOMINIO\n")
+    ontology_manager.ontology_analyzer()
+    
+    #Prenota una visita istologica
+    CSP_AnalysisPrenotation.lab_booking()
     

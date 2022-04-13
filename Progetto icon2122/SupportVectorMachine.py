@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import numpy as np, pandas as pd, seaborn as sn
+import pickle
 from sklearn import svm
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, f1_score
@@ -10,7 +10,6 @@ from inspect import signature
 from sklearn.metrics import average_precision_score
 import matplotlib.pyplot as plt
 
-""""""
 
 def SVM(X1,y1):
 
@@ -26,7 +25,7 @@ def SVM(X1,y1):
     print ('\nClasification report:\n',classification_report(y1_test, prediction))
 
 
-    #train model with cv of 5 
+    #train modello con cv di 5
     cv_scores = cross_val_score(clf, X1, y1, cv = 5)
 
     print('\ncv_scores mean:{}'.format(np.mean(cv_scores)))
@@ -37,7 +36,7 @@ def SVM(X1,y1):
     average_precision = average_precision_score(y1_test, prediction)
     precision, recall, _ = precision_recall_curve(y1_test, prediction)
 
-    # In matplotlib < 1.5, plt.fill_between does not have a 'step' argument
+    # plot
     step_kwargs = ({'step': 'post'}
                if 'step' in signature(plt.fill_between).parameters
                else {})
@@ -58,5 +57,8 @@ def SVM(X1,y1):
     plt.show()
 
     f1 = f1_score(y1_test, prediction)
-    
+    #ristampo i dati di interesse
     print('accuracy, average precision and f1-score are:', accuracy, average_precision, f1)
+    
+    #salvo il modello su disco per uso futuro
+    pickle.dump(clf, open("svm_model.sav", 'wb'))

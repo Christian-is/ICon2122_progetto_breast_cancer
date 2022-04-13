@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import numpy as np, pandas as pd, seaborn as sn
+import pickle
 from matplotlib import pyplot
 import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsClassifier
@@ -13,13 +13,13 @@ from sklearn.metrics import average_precision_score
 from sklearn.metrics import roc_curve
 from sklearn.metrics import roc_auc_score
 
-""""""
+
 def KNN(X,y):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size = 0.75, random_state = 13)
 
     error = []
-    # Calculating error for K values between 1 and 40
+    # Calcolo errore per K tra 1 e 20
     for i in range(1, 20):  
         knn = KNeighborsClassifier(n_neighbors = i)
         knn.fit(X_train, y_train)
@@ -27,7 +27,7 @@ def KNN(X,y):
         error.append(np.mean(pred_i != y_test))
  
     
-    #Grafico che mostra l'errore medio nelle predizioni a seguito di una variazione del valore K(numero vicini)
+    #Grafico che mostra l'errore medio nelle predizioni a seguito di una variazione del valore K (numero vicini)
     plt.plot(range(1, 20), error, color='red', linestyle='dashed', marker='o',  
          markerfacecolor='blue', markersize = 10)
     plt.title('Error Rate K Value')  
@@ -46,7 +46,7 @@ def KNN(X,y):
     print ('\nClasification report:\n',classification_report(y_test, prediction))
 
 
-    #train model with cv of 5
+    #train modello con cv di 5
     cv_scores = cross_val_score(neigh, X, y, cv=5)
 
     print('\ncv_scores mean:{}'.format(np.mean(cv_scores)))
@@ -56,22 +56,20 @@ def KNN(X,y):
 
     #AUC
     probs = knn.predict_proba(X_test)
-    # keep probabilities for the positive outcome only
+    # mantengo solo le probabilità positive
     probs = probs[:, 1]
 
     auc = roc_auc_score(y_test, probs)
     print('AUC: %.3f' % auc)
-    # calculate roc curve
+    # calcolo roc curve
     fpr, tpr, thresholds = roc_curve(y_test, probs)
-    # plot no skill
+    # plot
     pyplot.plot([0, 1], [0, 1], linestyle='--')
-    # plot the roc curve for the model
     pyplot.plot(fpr, tpr, marker='.')
     pyplot.xlabel('FP RATE')
     pyplot.ylabel('TP RATE')
-    # show the plot
+    
     confusion_Matrix = confusion_matrix(y_test, prediction)
-
 
     df_cm = pd.DataFrame(confusion_Matrix, index = [i for i in "01"], columns = [i for i in "01"])
     plt.figure(figsize = (10,7))
@@ -84,7 +82,7 @@ def KNN(X,y):
     f1 = f1_score(y_test, prediction)
 
 
-    # In matplotlib < 1.5, plt.fill_between does not have a 'step' argument
+    # plot
     step_kwargs = ({'step': 'post'}
                if 'step' in signature(plt.fill_between).parameters
                else {})
@@ -95,8 +93,8 @@ def KNN(X,y):
     plt.ylabel('Precision')
     plt.show()
     
-    
+    #ristampo i dati di interesse
     print('accuracy, average precision and f1-score are:', accuracy, average_precision, f1)
 
-
-
+    #salvo il modello su disco per uso futuro
+    pickle.dump(knn, open("knn_model.sav", 'wb'))

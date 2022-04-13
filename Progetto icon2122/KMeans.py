@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# roc curve and auc
 import numpy as np, pandas as pd, seaborn as sn
+import pickle
 from sklearn.cluster import KMeans  
-import seaborn as sns; sns.set()  # for plot styling
+import seaborn as sns; sns.set()  #per lo stile dei plot
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import matplotlib.pyplot as plt
 from sklearn.metrics import average_precision_score
@@ -50,4 +49,6 @@ def KMEANS(X,y):
     plt.show()
     
     print('accuracy, average precision are:', accuracy, average_precision)
-
+    
+    #salvo il modello su disco per uso futuro
+    pickle.dump(kmeans, open("kmeans_model.sav", 'wb'))
