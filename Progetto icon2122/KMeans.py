@@ -51,4 +51,4 @@ def KMEANS(X,y):
     print('accuracy, average precision are:', accuracy, average_precision)
     
     #salvo il modello su disco per uso futuro
-    pickle.dump(kmeans, open("kmeans_model.sav", 'wb'))
+    pickle.dump(kmeans, open("MODEL_kmeans.sav", 'wb'))

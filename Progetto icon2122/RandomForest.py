@@ -84,4 +84,4 @@ def RF(X1,y1):
     print('accuracy, average precision and f1-score are:', accuracy, average_precision, f1)
     
     #salvo il modello su disco per uso futuro
-    pickle.dump(clf, open("rf_model.sav", 'wb'))
+    pickle.dump(clf, open("MODEL_rf.sav", 'wb'))

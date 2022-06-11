@@ -97,4 +97,4 @@ def KNN(X,y):
     print('accuracy, average precision and f1-score are:', accuracy, average_precision, f1)
 
     #salvo il modello su disco per uso futuro
-    pickle.dump(knn, open("knn_model.sav", 'wb'))
+    pickle.dump(knn, open("MODEL_knn.sav", 'wb'))
